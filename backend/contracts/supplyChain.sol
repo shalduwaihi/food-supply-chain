@@ -222,6 +222,43 @@ contract SupplyChain {
         RET[retCtr] = retailer(_addr, _id, _fname, _lname, _role, _location);
     }
 
+
+    //To delete supplier. Only contract owner can delete a supplier
+    function deleteSupplier(
+        uint256 _id
+    ) public onlyByOwner() {
+        delete SUPP[_id];
+    }
+
+    //To delete transporter. Only contract owner can delete a transporter
+    function deleteTransporter(
+        uint256 _id
+    ) public onlyByOwner() {
+        delete TRA[_id];
+    }
+
+    //To delete manufacturer. Only contract owner can delete a manufacturer
+    function deleteManufacturer(
+        uint256 _id
+    ) public onlyByOwner() {
+        delete MAN[_id];
+    }
+
+    //To delete distributor. Only contract owner can delete a disbritor
+    function deleteDitributor(
+        uint256 _id
+    ) public onlyByOwner() {
+        delete DIS[_id];
+    }
+
+    //To delete distributor. Only contract owner can delete a disbritor
+    function deleteRetailer(
+        uint256 _id
+    ) public onlyByOwner() {
+        delete RET[_id];
+    }
+    
+
     //To supply raw materials from supplier to the manufacturer by transporter
     function supply(uint256 _productID) public {
         require(_productID > 0 && _productID <= productCtr);
@@ -359,70 +396,6 @@ contract SupplyChain {
         );
     }
 
-    //To delete suppliers. Only contract owner can delete a supplier
-    function deleteSUPP(
-        address _addr,
-        uint256 _id,
-        string memory _fname,
-        string memory _lname,
-        string memory _role,
-        string memory _location
-    ) public onlyByOwner() {
-        rmsCtr--;
-        SUPP[rmsCtr] = supplier(_addr, _id, _fname, _lname, _role, _location);
-    }
-
-    //To delete transporter. Only contract owner can delete transporter
-    function deleteTRA(
-        address _addr,
-        uint256 _id,
-        string memory _fname,
-        string memory _lname,
-        string memory _role,
-        string memory _location
-    ) public onlyByOwner() {
-        rmsCtr--;
-        TRA[traCtr] = transporter(_addr, _id, _fname, _lname, _role, _location);
-    }
-
-    //To delete manufacturer. Only contract owner can delete manufacturer
-    function deleteManufacturer(
-        address _addr,
-        uint256 _id,
-        string memory _fname,
-        string memory _lname,
-        string memory _role,
-        string memory _location
-    ) public onlyByOwner() {
-        manCtr--;
-        MAN[manCtr] = manufacturer(_addr, _id, _fname, _lname, _role, _location);
-    }
-
-    //To delete distributor. Only contract owner can delete distributor
-    function deleteDistributor(
-        address _addr,
-        uint256 _id,
-        string memory _fname,
-        string memory _lname,
-        string memory _role,
-        string memory _location
-    ) public onlyByOwner() {
-        disCtr--;
-        DIS[disCtr] = distributor(_addr, _id, _fname, _lname, _role, _location);
-    }
-
-    //To delete retailer. Only contract owner can delete retailer
-    function deleteRetailer(
-        address _addr,
-        uint256 _id,
-        string memory _fname,
-        string memory _lname,
-        string memory _role,
-        string memory _location
-    ) public onlyByOwner() {
-        retCtr--;
-        RET[retCtr] = retailer(_addr, _id, _fname, _lname, _role, _location);
-    }
 
 }
 
