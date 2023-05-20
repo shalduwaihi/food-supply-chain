@@ -396,6 +396,13 @@ contract SupplyChain {
         );
     }
 
+    // To delete products from the stock
+    function deleteProduct(uint256 _id)
+    public
+    onlyByOwner()
+    {
+        delete ProductStock[_id];
+    }
 
 }
 
