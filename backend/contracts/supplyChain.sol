@@ -445,6 +445,30 @@ contract SupplyChain {
         );
     }
 
+    // To update product info
+    function updateProduct(uint256 _id, string memory _quantity,
+        string memory _description,
+        string memory _location,
+        uint256 SUPPid,
+        uint256 TRAid,
+        uint256 MANid,
+        uint256 DISid,
+        uint256 RETid)
+    public
+    onlyByOwner()
+    {
+        ProductStock[_id] = product(
+            _quantity,
+            _description,
+            _location,
+            SUPPid,
+            TRAid,
+            MANid,
+            DISid,
+            RETid
+        );
+    }
+
     // To delete products from the stock
     function deleteProduct(uint256 _id)
     public
