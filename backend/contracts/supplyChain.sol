@@ -257,7 +257,56 @@ contract SupplyChain {
     ) public onlyByOwner() {
         delete RET[_id];
     }
-    
+
+    //To update supplier info
+    function updateSupplier(
+        uint256 _id,
+        string memory _fname,
+        string memory _lname,
+        string memory _role,
+        string memory _location) public onlyByOwner() {
+        SUPP[_id] = supplier( _fname, _lname, _role, _location);
+    }
+
+    //To update transporter info
+    function updateTransporter(
+        uint256 _id,
+        string memory _fname,
+        string memory _lname,
+        string memory _role,
+        string memory _location) public onlyByOwner() {
+        TRA[_id] = transporter( _fname, _lname, _role, _location);
+    }
+
+    //To update manufacurer info
+    function updateManufacturer(
+        uint256 _id,
+        string memory _fname,
+        string memory _lname,
+        string memory _role,
+        string memory _location) public onlyByOwner() {
+        MAN[_id] = manufacturer(_fname, _lname, _role, _location);
+    }
+
+    //To update distributor info
+    function updateDitributor(
+        uint256 _id,
+        string memory _fname,
+        string memory _lname,
+        string memory _role,
+        string memory _location) public onlyByOwner() {
+        DIS[_id] = distributor( _fname, _lname, _role, _location);
+    }
+
+    //To update retailer info
+    function updateRetailer(
+        uint256 _id,
+        string memory _fname,
+        string memory _lname,
+        string memory _role,
+        string memory _location) public onlyByOwner() {
+        RET[_id] = retailer( _fname, _lname, _role, _location);
+    }
 
     //To supply raw materials from supplier to the manufacturer by transporter
     function supply(uint256 _productID) public {
