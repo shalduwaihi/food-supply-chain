@@ -35,18 +35,31 @@ contract SupplyChain {
         Retailer
     }
     //using this we are going to track every single product the owner orders
+    //Raw material count
+    uint256 public rmCtr = 0;
     //Product count
     uint256 public productCtr = 0;
-    //Raw material supplier count
-    uint256 public rmsCtr = 0;
+    //supplier count
+    uint256 public suppCtr = 0;
     //Transporter count
     uint256 public traCtr = 0;
     //Manufacturer count
     uint256 public manCtr = 0;
-    //distributor count
+    //distributor count'/
     uint256 public disCtr = 0;
     //retailer count
     uint256 public retCtr = 0;
+
+    //To store information about the raw materials
+    struct rawMaterial {
+        uint256 id; //unique raw material id
+        string quantity; //raw material quantity
+        string description; // about raw material
+        string location; // raw material location
+        uint256 SUPPid; //id of the supplier for this particular raw material
+        uint256 TRAid; //id of the transporter for this particular raw material
+        uint256 MANid; //id of the Manufacturer for this particular raw material
+    }
 
     //To store information about the product
     struct product {
@@ -167,8 +180,8 @@ contract SupplyChain {
         string memory _role,
         string memory _location
     ) public onlyByOwner() {
-        rmsCtr++;
-        SUPP[rmsCtr] = supplier(_addr, _id, _fname, _lname, _role, _location);
+        suppCtr++;
+        SUPP[suppCtr] = supplier(_addr, _id, _fname, _lname, _role, _location);
     }
     //To add transporter. Only contract owner can add a new transporter
     function addTRA(
@@ -179,7 +192,7 @@ contract SupplyChain {
         string memory _role,
         string memory _location
     ) public onlyByOwner() {
-        rmsCtr++;
+        traCtr++;
         TRA[traCtr] = transporter(_addr, _id, _fname, _lname, _role, _location);
     }
 
@@ -320,8 +333,8 @@ contract SupplyChain {
 
     //To check if Supplier is available in the blockchain
     function findSUPP(address _address) private view returns (uint256) {
-        require(rmsCtr > 0);
-        for (uint256 i = 1; i <= rmsCtr; i++) {
+        require(suppCtr > 0);
+        for (uint256 i = 1; i <= suppCtr; i++) {
             if (SUPP[i].addr == _address) return SUPP[i].id;
         }
         return 0;
@@ -422,6 +435,22 @@ contract SupplyChain {
         return 0;
     }
 
+    // To add new raw material to the stock
+    function addRawMaterial(uint256 _id, string memory _quantity, string memory _description, string memory _location)
+    public {
+        require((suppCtr > 0) && (traCtr > 0) && (manCtr > 0));
+        rmCtr++;
+        rawMaterialStock[rmCtr] = rawMaterial(
+            _id,
+            _quantity,
+            _description,
+            _location,
+            0,
+            0,
+            0
+        );
+    }
+
 
 
     // To add new products to the stock
@@ -429,14 +458,13 @@ contract SupplyChain {
     public
     onlyByOwner()
     {
-        require((rmsCtr > 0) && (manCtr > 0) && (traCtr > 0) && (disCtr > 0) && (retCtr > 0));
+        require((manCtr > 0) && (traCtr > 0) && (disCtr > 0) && (retCtr > 0));
         productCtr++;
         ProductStock[productCtr] = product(
             _id,
             _quantity,
             _description,
             _location,
-            0,
             0,
             0,
             0,
