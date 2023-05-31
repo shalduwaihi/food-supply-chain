@@ -60,6 +60,8 @@ contract SupplyChain {
         uint256 TRAid; //id of the transporter for this particular raw material
         uint256 MANid; //id of the Manufacturer for this particular raw material
     }
+    //To store all the product on the blockchain
+    mapping(uint256 => rawMaterial) public rawMaterialStock;
 
     //To store information about the product
     struct product {
@@ -67,7 +69,6 @@ contract SupplyChain {
         string quantity; //product quantity
         string description; // about product
         string location; // product location
-        uint256 SUPPid; //id of the supplier for this particular product
         uint256 TRAid; //id of the transporter for this particular product
         uint256 MANid; //id of the Manufacturer for this particular product
         uint256 DISid; //id of the distributor for this particular product
@@ -273,52 +274,57 @@ contract SupplyChain {
 
     //To update supplier info
     function updateSupplier(
+        address _addr,
         uint256 _id,
         string memory _fname,
         string memory _lname,
         string memory _role,
         string memory _location) public onlyByOwner() {
-        SUPP[_id] = supplier( _fname, _lname, _role, _location);
+        SUPP[_id] = supplier(_addr, _id, _fname, _lname, _role, _location);
     }
 
     //To update transporter info
     function updateTransporter(
+        address _addr,
         uint256 _id,
         string memory _fname,
         string memory _lname,
         string memory _role,
         string memory _location) public onlyByOwner() {
-        TRA[_id] = transporter( _fname, _lname, _role, _location);
+        TRA[_id] = transporter(_addr, _id, _fname, _lname, _role, _location);
     }
 
     //To update manufacurer info
     function updateManufacturer(
+        address _addr,
         uint256 _id,
         string memory _fname,
         string memory _lname,
         string memory _role,
         string memory _location) public onlyByOwner() {
-        MAN[_id] = manufacturer(_fname, _lname, _role, _location);
+        MAN[_id] = manufacturer(_addr, _id, _fname, _lname, _role, _location);
     }
 
     //To update distributor info
     function updateDitributor(
+        address _addr,
         uint256 _id,
         string memory _fname,
         string memory _lname,
         string memory _role,
         string memory _location) public onlyByOwner() {
-        DIS[_id] = distributor( _fname, _lname, _role, _location);
+        DIS[_id] = distributor(_addr, _id, _fname, _lname, _role, _location);
     }
 
     //To update retailer info
     function updateRetailer(
+        address _addr,
         uint256 _id,
         string memory _fname,
         string memory _lname,
         string memory _role,
         string memory _location) public onlyByOwner() {
-        RET[_id] = retailer( _fname, _lname, _role, _location);
+        RET[_id] = retailer( _addr, _id, _fname, _lname, _role, _location);
     }
 
     //To supply raw materials from supplier to the manufacturer by transporter
@@ -477,23 +483,25 @@ contract SupplyChain {
     function updateProduct(uint256 _id, string memory _quantity,
         string memory _description,
         string memory _location,
-        uint256 SUPPid,
         uint256 TRAid,
         uint256 MANid,
         uint256 DISid,
-        uint256 RETid)
+        uint256 RETid,
+        STAGE stage)
     public
     onlyByOwner()
     {
         ProductStock[_id] = product(
+            _id,
             _quantity,
             _description,
             _location,
-            SUPPid,
             TRAid,
             MANid,
             DISid,
-            RETid
+            RETid,
+            stage
+
         );
     }
 
